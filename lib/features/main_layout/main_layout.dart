@@ -19,7 +19,7 @@ class _MainLayoutState extends State<MainLayout> {
   int currentIndex = 0;
   List<Widget> tabs = [
     const HomeTab(),
-    const CategoriesTab(),
+     const CategoriesTab(),
     const FavouriteScreen(),
     const ProfileTab(),
   ];

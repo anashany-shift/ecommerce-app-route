@@ -1,11 +1,13 @@
-import 'package:ecommerce_app/core/resources/assets_manager.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce_app/core/resources/color_manager.dart';
 import 'package:ecommerce_app/core/resources/styles_manager.dart';
+import 'package:ecommerce_app/data/model/categories_models/category.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomCategoryWidget extends StatelessWidget {
-  const CustomCategoryWidget({super.key});
+  const CustomCategoryWidget({super.key, required this.category});
+  final Category category;
 
   @override
   Widget build(BuildContext context) {
@@ -38,18 +40,28 @@ class CustomCategoryWidget extends StatelessWidget {
           child: Container(
             height: 100.h,
             width: 100.w,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-            ),
-            child: Image.asset(
-              ImageAssets.categoryHomeImage,
-              fit: BoxFit.cover,
-            ),
+            child:CachedNetworkImage(
+              imageUrl: category.image ?? "",
+              imageBuilder: (context, imageProvider) => Container(
+                height: 100.h,
+                width: 100.w,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    image: imageProvider,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              placeholder: (context, url) => const CircularProgressIndicator(),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+            )
           ),
         ),
+
         SizedBox(height: 8.h),
         Text(
-          "men's fashion",
+          category.name ?? "",
           style: getRegularStyle(color: ColorManager.darkBlue, fontSize: 14.sp),
         ),
       ],
