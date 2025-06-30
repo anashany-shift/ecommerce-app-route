@@ -8,6 +8,7 @@ import 'core/routes_manager/route_generator.dart';
 void main() {
   setupServiceLocator();
 
+
   runApp(const MainApp());
 }
 

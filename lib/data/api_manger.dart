@@ -15,8 +15,8 @@ class ApiManger {
   }
   final _baseUrl = 'https://ecommerce.routemisr.com/';
 
-  Future<Map<String, dynamic>> get({required String endPoint}) async {
-    var response = await dio.get("$_baseUrl$endPoint");
+  Future<Map<String, dynamic>> get({required String endPoint,Map<String,dynamic>?queryParam}) async {
+    var response = await dio.get("$_baseUrl$endPoint",queryParameters:queryParam);
     return response.data;
   }
 }

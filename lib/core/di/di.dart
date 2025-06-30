@@ -1,7 +1,10 @@
 import 'package:dio/dio.dart';
+import 'package:ecommerce_app/data/repo_impl/products_repo_impl.dart';
 import 'package:ecommerce_app/data/repo_impl/sub_category_repo_impl.dart';
+import 'package:ecommerce_app/domain/repos/ProductsRepo/products_repo.dart';
 import 'package:ecommerce_app/domain/repos/subCategoriesRepo/sub_category_repo.dart';
 import 'package:ecommerce_app/features/main_layout/categories/presentation/manger/sub_Categories_cubit/sub_category_cubit.dart';
+import 'package:ecommerce_app/features/products_screen/presentation/manger/products_cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:ecommerce_app/data/api_manger.dart';
 import 'package:ecommerce_app/domain/repos/HomeRepo/home_repo.dart';
@@ -19,9 +22,14 @@ void setupServiceLocator() {
   // 2. Repository
   getIt.registerLazySingleton<HomeRepo>(() => HomeRepoImpl(getIt<ApiManger>()));
   getIt.registerLazySingleton<SubCategoryRepo>(() => SubCategoryRepoImpl(getIt<ApiManger>()));
+  getIt.registerLazySingleton<ProductsRepo>(() => ProductsRepoImpl(getIt<ApiManger>()));
 
   // 3. Cubit
   getIt.registerFactory<CategoryCubit>(() => CategoryCubit(getIt<HomeRepo>()));
   getIt.registerFactory<BrandCubit>(() => BrandCubit(getIt<HomeRepo>()));
   getIt.registerFactory<SubCategoryCubit>(() => SubCategoryCubit(getIt<SubCategoryRepo>()));
+  getIt.registerFactory<ProductsCubit>(() => ProductsCubit(getIt<ProductsRepo>()));
+
+
+
 }

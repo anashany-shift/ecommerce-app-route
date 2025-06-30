@@ -2,7 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce_app/core/resources/assets_manager.dart';
 import 'package:ecommerce_app/data/model/brand_model/Brand.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../../../../core/routes_manager/routes.dart';
+import '../../../../products_screen/presentation/manger/products_cubit.dart';
+import '../../../../products_screen/presentation/screens/Products_catalog_argument.dart';
 
 class CustomBrandWidget extends StatelessWidget {
   const CustomBrandWidget({super.key, required this.brand, });
@@ -11,34 +16,44 @@ class CustomBrandWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(100.r),
-          child: Container(
-            height: 100.h,
-            width: 100.w,
+    return InkWell(
+      onTap: () {
+        Navigator.pushNamed(context, Routes.productsScreenRoute,
+            arguments: ProductsCatalogArgument(
+                brand: brand.id
+            )
+        );
 
-            child:
-            CachedNetworkImage(
-              imageUrl: brand.image ?? "",
-              imageBuilder: (context, imageProvider) => Container(
-                height: 100.h,
-                width: 100.w,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    image: imageProvider,
-                    fit: BoxFit.cover,
+      },
+      child: Column(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(100.r),
+            child: Container(
+              height: 100.h,
+              width: 100.w,
+
+              child:
+              CachedNetworkImage(
+                imageUrl: brand.image ?? "",
+                imageBuilder: (context, imageProvider) => Container(
+                  height: 100.h,
+                  width: 100.w,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      image: imageProvider,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
-              ),
-              placeholder: (context, url) => const CircularProgressIndicator(),
-              errorWidget: (context, url, error) => const Icon(Icons.error),
-            )
+                placeholder: (context, url) => const CircularProgressIndicator(),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+              )
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

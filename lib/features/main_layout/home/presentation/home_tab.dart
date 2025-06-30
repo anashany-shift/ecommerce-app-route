@@ -53,105 +53,112 @@ class _HomeTabState extends State<HomeTab> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          CustomAdsWidget(
-            adsImages: adsImages,
-            currentIndex: _currentIndex,
-            timer: _timer,
-          ),
-          Column(
-            children: [
-              CustomSectionBar(sectionNname: 'Categories', function: () {}),
-              BlocBuilder<CategoryCubit, CategoryState>(
-                builder: (context, state) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create:(context) =>CategoryCubit(getIt<HomeRepo>())..loadCategory() ,),
+        BlocProvider(create:(context) =>BrandCubit(getIt<HomeRepo>())..loadBrand() ,),
 
-                  if (state is CategoryError) {
+      ],
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            CustomAdsWidget(
+              adsImages: adsImages,
+              currentIndex: _currentIndex,
+              timer: _timer,
+            ),
+            Column(
+              children: [
+                CustomSectionBar(sectionNname: 'Categories', function: () {}),
+                BlocBuilder<CategoryCubit, CategoryState>(
+                  builder: (context, state) {
 
-                    return Center(child: Text(state.errorMessage),);
-                  } else if (state is CategorySuccess) {
+                    if (state is CategoryError) {
+
+                      return Center(child: Text(state.errorMessage),);
+                    } else if (state is CategorySuccess) {
 
 
-                    final categories = state.category;
-                    return SizedBox(
-                      height: 270.h,
-                      child: GridView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) {
-                          return CustomCategoryWidget(
-                            category: categories[index],);
-                        },
-                        itemCount: state.category.length,
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
+                      final categories = state.category;
+                      return SizedBox(
+                        height: 270.h,
+                        child: GridView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index) {
+                            return CustomCategoryWidget(
+                              category: categories[index],);
+                          },
+                          itemCount: state.category.length,
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                          ),
                         ),
-                      ),
-                    );
-                  } else {
-                    return const Center(child: CircularProgressIndicator(),);
-                  }
-                },
-              ),
-              SizedBox(height: 12.h),
-              CustomSectionBar(sectionNname: 'Brands', function: () {}),
-              BlocBuilder<BrandCubit, BrandState>(
-                builder: (context, state) {
-                  if(state is BrandError){
-                       return Center(child: Text(state.errorMessage),);
-                  }
-                  else if(state is BrandSuccess){
-                    final brands=state.brand;
-                    return SizedBox(
-
-                      height: 270.h,
-                      child: GridView.builder(
-
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) {
-                          return  CustomBrandWidget(brand: brands[index],);
-                        },
-                        itemCount: brands.length,
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                        ),
-                      ),
-                    );
-
-                  }else{
-                    return const Center(child: CircularProgressIndicator(),);
-                  }
-
-                },
-              ),
-              CustomSectionBar(
-                sectionNname: 'Most Selling Products',
-                function: () {},
-              ),
-              SizedBox(
-                child: SizedBox(
-                  height: 360.h,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return const ProductCard(
-                        title: "Nike Air Jordon",
-                        description:
-                        "Nike is a multinational corporation that designs, develops, and sells athletic footwear ,apparel, and accessories",
-                        rating: 4.5,
-                        price: 1100,
-                        priceBeforeDiscound: 1500,
-                        image: ImageAssets.categoryHomeImage,
                       );
-                    },
-                    itemCount: 20,
+                    } else {
+                      return const Center(child: CircularProgressIndicator(),);
+                    }
+                  },
+                ),
+                SizedBox(height: 12.h),
+                CustomSectionBar(sectionNname: 'Brands', function: () {}),
+                BlocBuilder<BrandCubit, BrandState>(
+                  builder: (context, state) {
+                    if(state is BrandError){
+                         return Center(child: Text(state.errorMessage),);
+                    }
+                    else if(state is BrandSuccess){
+                      final brands=state.brand;
+                      return SizedBox(
+
+                        height: 270.h,
+                        child: GridView.builder(
+
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index) {
+                            return  CustomBrandWidget(brand: brands[index],);
+                          },
+                          itemCount: brands.length,
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                          ),
+                        ),
+                      );
+
+                    }else{
+                      return const Center(child: CircularProgressIndicator(),);
+                    }
+
+                  },
+                ),
+                CustomSectionBar(
+                  sectionNname: 'Most Selling Products',
+                  function: () {},
+                ),
+                SizedBox(
+                  child: SizedBox(
+                    height: 360.h,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        return const ProductCard(
+                          title: "Nike Air Jordon",
+                          description:
+                          "Nike is a multinational corporation that designs, develops, and sells athletic footwear ,apparel, and accessories",
+                          rating: 4.5,
+                          price: 1100,
+                          priceBeforeDiscound: 1500,
+                          image: ImageAssets.categoryHomeImage,
+                        );
+                      },
+                      itemCount: 20,
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(height: 12.h),
-            ],
-          )
-        ],
+                SizedBox(height: 12.h),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

@@ -1,5 +1,5 @@
-import 'Metadata.dart';
-import 'Data.dart';
+ import 'Metadata.dart';
+import 'product.dart';
 
 class ProductResponse {
   ProductResponse({

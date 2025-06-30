@@ -1,40 +1,39 @@
 import 'package:ecommerce_app/core/routes_manager/routes.dart';
+import 'package:ecommerce_app/data/model/products/product.dart';
 import 'package:ecommerce_app/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:ecommerce_app/features/auth/presentation/screens/sign_up_screen.dart';
 import 'package:ecommerce_app/features/cart/screens/cart_screen.dart';
 import 'package:ecommerce_app/features/main_layout/main_layout.dart';
 import 'package:ecommerce_app/features/product_details/presentation/screen/product_details.dart';
+import 'package:ecommerce_app/features/products_screen/presentation/screens/Products_catalog_argument.dart';
 import 'package:ecommerce_app/features/products_screen/presentation/screens/products_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../domain/repos/HomeRepo/home_repo.dart';
-import '../../features/main_layout/home/presentation/manger/brand_cubit/brand_cubit.dart';
-import '../../features/main_layout/home/presentation/manger/category_cubit/category_cubit.dart';
-import '../di/di.dart';
 
 class RouteGenerator {
   static Route<dynamic> getRoute(RouteSettings settings) {
     switch (settings.name) {
 
       case Routes.cartRoute:
-        return MaterialPageRoute(builder: (_) => const CartScreen());
+        return MaterialPageRoute(builder: (_) =>  CartScreen(
+          product: settings.arguments as Product,
+          counter: settings.arguments  as int,
+        ));
       case Routes.mainRoute:
         return MaterialPageRoute(
-          builder: (_) => MultiBlocProvider(
-              providers: [
-                BlocProvider(create:(context) =>CategoryCubit(getIt<HomeRepo>())..loadCategory() ,),
-                BlocProvider(create:(context) =>BrandCubit(getIt<HomeRepo>())..loadBrand() ,),
-
-              ],
-              child: const MainLayout()),
+          builder: (_) => const MainLayout(),
         );
 
       case Routes.productsScreenRoute:
-        return MaterialPageRoute(builder: (_) => const ProductsScreen());
+        return MaterialPageRoute(builder: (_) => ProductsScreen(
+          settings.arguments as ProductsCatalogArgument?
+        ));
 
       case Routes.productDetails:
-        return MaterialPageRoute(builder: (_) => const ProductDetails());
+        return MaterialPageRoute(builder: (_) =>  ProductDetails(
+          product: settings.arguments as Product,
+
+        ));
 
       case Routes.signInRoute:
         return MaterialPageRoute(builder: (_) => const SignInScreen());
