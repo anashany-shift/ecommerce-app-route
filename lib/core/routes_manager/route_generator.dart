@@ -8,6 +8,11 @@ import 'package:ecommerce_app/features/product_details/presentation/screen/produ
 import 'package:ecommerce_app/features/products_screen/presentation/screens/Products_catalog_argument.dart';
 import 'package:ecommerce_app/features/products_screen/presentation/screens/products_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../domain/repos/AuthRepo/auth_repo.dart';
+import '../../features/auth/presentation/manger/login_cubit.dart';
+import '../di/di.dart';
 
 
 class RouteGenerator {
@@ -36,7 +41,10 @@ class RouteGenerator {
         ));
 
       case Routes.signInRoute:
-        return MaterialPageRoute(builder: (_) => const SignInScreen());
+        return MaterialPageRoute(builder: (_) =>  BlocProvider(
+    create: (context) => LoginCubit(getIt<AuthRepo>()),
+   child: SignInScreen(),
+          ));
 
       case Routes.signUpRoute:
         return MaterialPageRoute(builder: (_) => const SignUpScreen());
