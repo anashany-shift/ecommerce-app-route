@@ -5,7 +5,8 @@ import 'package:ecommerce_app/data/repo_impl/sub_category_repo_impl.dart';
 import 'package:ecommerce_app/domain/repos/AuthRepo/auth_repo.dart';
 import 'package:ecommerce_app/domain/repos/ProductsRepo/products_repo.dart';
 import 'package:ecommerce_app/domain/repos/subCategoriesRepo/sub_category_repo.dart';
-import 'package:ecommerce_app/features/auth/presentation/manger/login_cubit.dart';
+import 'package:ecommerce_app/features/auth/presentation/manger/login_cubit/login_cubit.dart';
+import 'package:ecommerce_app/features/auth/presentation/manger/signUp_cubit/sign_upcubit_cubit.dart';
 import 'package:ecommerce_app/features/main_layout/categories/presentation/manger/sub_Categories_cubit/sub_category_cubit.dart';
 import 'package:ecommerce_app/features/products_screen/presentation/manger/products_cubit.dart';
 import 'package:get_it/get_it.dart';
@@ -34,6 +35,7 @@ void setupServiceLocator() {
   getIt.registerFactory<SubCategoryCubit>(() => SubCategoryCubit(getIt<SubCategoryRepo>()));
   getIt.registerFactory<ProductsCubit>(() => ProductsCubit(getIt<ProductsRepo>()));
   getIt.registerFactory<LoginCubit>(() => LoginCubit(getIt<AuthRepo>()));
+  getIt.registerFactory<SignupCubit>(() => SignupCubit(getIt<AuthRepo>()));
 
 
 

@@ -125,7 +125,12 @@ class SubCategoriesListWidget extends StatelessWidget {
                     crossAxisSpacing: AppSize.s8,
                   ),
                 );
-              } else if (state is SubCategoryError) {
+              }else if(state is SubCategoryEmpty){
+                return const SliverToBoxAdapter(
+                    child: Center(child: Text("Empty Item")));
+              }
+
+              else if (state is SubCategoryError) {
                 return SliverToBoxAdapter(
                     child: Center(child: Text(state.errorMessage)));
               } else {

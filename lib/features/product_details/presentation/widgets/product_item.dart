@@ -5,14 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProductItem extends StatelessWidget {
-  const ProductItem({super.key, this.onTap,  required this.product});
+  const ProductItem({super.key, this.onTap, required this.imageUrl});
 
   final void Function()? onTap;
-  final Product product;
+
+  final String imageUrl;
   @override
   Widget build(BuildContext context) {
     return CachedNetworkImage(
-      imageUrl: product.imageCover??"",
+      imageUrl: imageUrl,
       imageBuilder: (context, image) => Container(
         width: double.infinity,
         padding: const EdgeInsets.all(16),

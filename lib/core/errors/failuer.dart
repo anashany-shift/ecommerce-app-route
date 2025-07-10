@@ -32,16 +32,49 @@ class ServerFailure extends Failure{
         return ServerFailure('oops there was an error ,please try again');
     }
   }
-  factory ServerFailure.fromResponseError(int statusCode,dynamic response){
-    if(statusCode == 400 || statusCode ==401 ||statusCode==402 ||statusCode==403){
-      return ServerFailure(response['error']['message']);
-    }else if(statusCode == 404){
-      return ServerFailure('your request not found , please try again');
+  // factory ServerFailure.fromResponseError(int statusCode,dynamic response){
+  //   if(statusCode == 400 || statusCode ==401 ||statusCode==402 ||statusCode==403){
+  //     return ServerFailure(response['error']['message']);
+  //   }else if(statusCode == 404){
+  //     return ServerFailure('your request not found , please try again');
+  //
+  //   }else if(statusCode ==500){
+  //     return ServerFailure('Internal server error');
+  //   }else{
+  //     return ServerFailure('oops there was an error ,please try again');
+  //   }
+  // }
+  factory ServerFailure.fromResponseError(int statusCode, dynamic response) {
+    try {
+      if (response is Map<String, dynamic>) {
+        // حالة وجود 'message' مباشرة في الاستجابة
+        if (response.containsKey('message')) {
+          return ServerFailure(response['message']);
+        }
+        // أحيانًا تكون الرسالة داخل 'error' أو 'errors'
+        if (response['error'] is Map && response['error']['message'] != null) {
+          return ServerFailure(response['error']['message']);
+        }
+        if (response['errors'] is Map) {
+          // لو فيه errors زي {"param": ..., "msg": ...}
+          final firstError = response['errors'].values.first;
+          if (firstError is String) {
+            return ServerFailure(firstError);
+          }
+        }
+      }
 
-    }else if(statusCode ==500){
-      return ServerFailure('Internal server error');
-    }else{
-      return ServerFailure('oops there was an error ,please try again');
+      if (statusCode == 404) {
+        return ServerFailure('Your request was not found, please try again.');
+      } else if (statusCode == 500) {
+        return ServerFailure('Internal server error');
+      }
+
+      return ServerFailure('Oops! Something went wrong. Please try again.');
+    } catch (e) {
+      // fallback لو حصل parsing error
+      return ServerFailure('Unexpected error format from server');
     }
   }
+
 }

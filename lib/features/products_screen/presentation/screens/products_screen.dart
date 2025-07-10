@@ -1,3 +1,4 @@
+import 'package:ecommerce_app/core/resources/color_manager.dart';
 import 'package:ecommerce_app/core/resources/values_manager.dart';
 import 'package:ecommerce_app/domain/repos/ProductsRepo/products_repo.dart';
 import 'package:ecommerce_app/features/products_screen/presentation/manger/products_cubit.dart';
@@ -24,6 +25,7 @@ class ProductsScreen extends StatelessWidget {
             subCategory: productsCatalogArgument?.subCategory,
             brand: productsCatalogArgument?.brand),
       child: Scaffold(
+        backgroundColor: ColorManager.containerGray,
         appBar: const HomeScreenAppBar(
           automaticallyImplyLeading: true,
         ),

@@ -23,27 +23,30 @@ class ProductDetails extends StatefulWidget {
 }
 
 class _ProductDetailsState extends State<ProductDetails> {
-  int counter =1;
+  int counter = 1;
 
-  void onIncrement(int x){
+  void onIncrement(int x) {
     setState(() {
-      counter=x+1;
+      counter = x + 1;
     });
-
   }
-  void   onDecrement(int x){
-    if(counter>1){
+
+  void onDecrement(int x) {
+    if (counter > 1) {
       setState(() {
-        counter=x-1;
+        counter = x - 1;
       });
     }
   }
+
   @override
   Widget build(BuildContext context) {
     var totalPrice = (widget.product.priceAfterDiscount ?? 0) * counter;
 
     return Scaffold(
+      backgroundColor: ColorManager.containerGray,
       appBar: AppBar(
+        backgroundColor: ColorManager.containerGray,
         centerTitle: true,
         title: Text(
           'Product Details',
@@ -70,17 +73,14 @@ class _ProductDetailsState extends State<ProductDetails> {
           padding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 50.h),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            ProductSlider(items: [
-              ProductItem(
-                product: widget.product,
-              ),
-              ProductItem(
-                product: widget.product,
-              ),
-              ProductItem(
-                product: widget.product,
-              )
-            ], initialIndex: 0),
+            ProductSlider(
+              items: widget.product.images!
+                  .map(
+                    (e) => ProductItem(imageUrl: e),
+                  )
+                  .toList(),
+              initialIndex: 0,
+            ),
             SizedBox(
               height: 24.h,
             ),
@@ -95,12 +95,12 @@ class _ProductDetailsState extends State<ProductDetails> {
               counter: counter,
               onDecrement: onDecrement,
               onIncrement: onIncrement,
-
             ),
             SizedBox(
               height: 16.h,
             ),
-            ProductDescription(productDescription: widget.product.description ?? ""),
+            ProductDescription(
+                productDescription: widget.product.description ?? ""),
             ProductSize(
               size: const [35, 38, 39, 40],
               onSelected: () {},
@@ -146,7 +146,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                   child: CustomElevatedButton(
                     label: 'Add to cart',
                     onTap: () {
-                      Navigator.pushNamed(context,Routes.cartRoute,arguments: {widget.product,counter} );
+                      Navigator.pushNamed(context, Routes.cartRoute,
+                          arguments: {widget.product, counter});
                     },
                     prefixIcon: Icon(
                       Icons.add_shopping_cart_outlined,

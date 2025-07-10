@@ -26,6 +26,8 @@ class _MainLayoutState extends State<MainLayout> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor:Color(0xFFF1F8F6),
+
       appBar: const HomeScreenAppBar(),
       extendBody: false,
       body: tabs[currentIndex],

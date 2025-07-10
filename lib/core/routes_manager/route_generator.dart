@@ -1,5 +1,6 @@
 import 'package:ecommerce_app/core/routes_manager/routes.dart';
 import 'package:ecommerce_app/data/model/products/product.dart';
+import 'package:ecommerce_app/features/auth/presentation/manger/signUp_cubit/sign_upcubit_cubit.dart';
 import 'package:ecommerce_app/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:ecommerce_app/features/auth/presentation/screens/sign_up_screen.dart';
 import 'package:ecommerce_app/features/cart/screens/cart_screen.dart';
@@ -11,43 +12,46 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../domain/repos/AuthRepo/auth_repo.dart';
-import '../../features/auth/presentation/manger/login_cubit.dart';
+import '../../features/auth/presentation/manger/login_cubit/login_cubit.dart';
 import '../di/di.dart';
-
 
 class RouteGenerator {
   static Route<dynamic> getRoute(RouteSettings settings) {
     switch (settings.name) {
-
       case Routes.cartRoute:
-        return MaterialPageRoute(builder: (_) =>  CartScreen(
-          product: settings.arguments as Product,
-          counter: settings.arguments  as int,
-        ));
+        return MaterialPageRoute(
+            builder: (_) => CartScreen(
+                  product: settings.arguments as Product,
+                  counter: settings.arguments as int,
+                ));
       case Routes.mainRoute:
         return MaterialPageRoute(
           builder: (_) => const MainLayout(),
         );
 
       case Routes.productsScreenRoute:
-        return MaterialPageRoute(builder: (_) => ProductsScreen(
-          settings.arguments as ProductsCatalogArgument?
-        ));
+        return MaterialPageRoute(
+            builder: (_) =>
+                ProductsScreen(settings.arguments as ProductsCatalogArgument?));
 
       case Routes.productDetails:
-        return MaterialPageRoute(builder: (_) =>  ProductDetails(
-          product: settings.arguments as Product,
-
-        ));
+        return MaterialPageRoute(
+            builder: (_) => ProductDetails(
+                  product: settings.arguments as Product,
+                ));
 
       case Routes.signInRoute:
-        return MaterialPageRoute(builder: (_) =>  BlocProvider(
-    create: (context) => LoginCubit(getIt<AuthRepo>()),
-   child: SignInScreen(),
-          ));
+        return MaterialPageRoute(
+            builder: (_) => BlocProvider<LoginCubit>(
+                  create: (context) => LoginCubit(getIt<AuthRepo>()),
+                  child:const SignInScreen(),
+                ));
 
       case Routes.signUpRoute:
-        return MaterialPageRoute(builder: (_) => const SignUpScreen());
+        return MaterialPageRoute(
+            builder: (_) => BlocProvider<SignupCubit>(
+                create: (context) => SignupCubit(getIt<AuthRepo>()),
+                child: const SignUpScreen()));
       default:
         return unDefinedRoute();
     }

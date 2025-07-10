@@ -10,16 +10,19 @@ class SubCategoryCubit extends Cubit<SubCategoryState> {
   SubCategoryCubit(this.subCategoryRepo) : super(SubCategoryInitial());
   Future<void> loadSubCategory(catId) async {
     emit(SubCategoryLoading());
-    var result = await subCategoryRepo.getSubCategory(catId);
-    result.fold((failure) {
-      print("❌ Failed to get Subcategories: ${failure.errorMassage}");
-      emit(SubCategoryError(failure.errorMassage));
-    }, (category) {
-      print("✅ SubCategories fetched successfully: ${category.length}");
-      emit(SubCategorySuccess(category));
-    });
+    try {
+      var result = await subCategoryRepo.getSubCategory(catId);
+      result.fold((failure) {
+        emit(SubCategoryError(failure.errorMassage));
+      }, (category) {
+        if (category.isEmpty) {
+          emit(SubCategoryEmpty());
+        } else {
+          emit(SubCategorySuccess(category));
+        }
+      });
+    } on Exception catch (e) {
+      emit(SubCategoryError(e.toString()));
+    }
   }
 }
-
-
-

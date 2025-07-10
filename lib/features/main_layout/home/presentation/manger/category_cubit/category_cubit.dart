@@ -11,13 +11,15 @@ class CategoryCubit extends Cubit<CategoryState> {
 
   Future<void> loadCategory() async {
     emit(CategoryLoading());
-    var result = await homeRepo.getCategory();
-    result.fold((failure) {
-      print("❌ Failed to get categories: ${failure.errorMassage}");
-      emit(CategoryError(failure.errorMassage));
-    }, (category) {
-      print("✅ Categories fetched successfully: ${category.length}");
-      emit(CategorySuccess(category));
-    });
+    try {
+      var result = await homeRepo.getCategory();
+      result.fold((failure) {
+        emit(CategoryError(failure.errorMassage));
+      }, (category) {
+        emit(CategorySuccess(category));
+      });
+    } on Exception catch (e) {
+      emit(CategoryError(e.toString()));
+    }
   }
 }

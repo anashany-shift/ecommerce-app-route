@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:ecommerce_app/data/model/auth_model/login_request/LoginRequest.dart';
+import 'package:ecommerce_app/data/model/auth_model/signup_model/SignUpRequest.dart';
 import 'package:flutter/cupertino.dart';
 
 class ApiManger {
@@ -27,9 +28,9 @@ class ApiManger {
   //post request
 
   Future<Map<String, dynamic>> post(
-      {required String endPoint, LoginRequest? loginRequest}) async {
+      {required String endPoint,  required dynamic requestBody,}) async {
     var response =
-        await dio.post("$_baseUrl$endPoint", data: loginRequest?.toJson());
+        await dio.post("$_baseUrl$endPoint", data: requestBody);
     return response.data;
   }
 }
