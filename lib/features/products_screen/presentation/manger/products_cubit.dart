@@ -15,15 +15,52 @@ class ProductsCubit extends Cubit<ProductsState> {
     var result = await productsRepo.getProducts(
         subCategory: subCategory, category: category, brand: brand);
     result.fold((failure) {
-      print("❌ Failed to get Products: ${failure.errorMassage}");
       emit(ProductsError(failure.errorMassage));
     }, (products) {
       if (products.isEmpty) {
-        print("⚠️ No products found.");
         emit(ProductsEmpty());
-      }else
-        print("✅ products fetched successfully: ${products.length}");
+      } else {
         emit(ProductsSuccess(products));
-      });
+      }
+    });
   }
+
+  Future<void> addWashList({required String id}) async {
+    emit(AddWashListLoading());
+    try {
+      var message = await productsRepo.addWashList(id: id);
+      message.fold(
+        (failure) => emit(AddWashListError(errorMessage: failure.errorMassage)),
+        (message) => emit(AddWashListSuccess(message: message)),
+      );
+    } on Exception catch (e) {
+      emit(AddWashListError(errorMessage: e.toString()));
+    }
+  }
+
+  Future<void> removeWashList({required String id}) async {
+    emit(RemoveWahListLoading());
+    try {
+      var message = await productsRepo.removeWashList(id: id);
+      message.fold(
+        (failure) =>
+            emit(RemoveWahListError(errorMessage: failure.errorMassage)),
+        (message) => emit(RemoveWahListSuccess(message: message)),
+      );
+    } on Exception catch (e) {
+      emit(RemoveWahListError(errorMessage: e.toString()));
+    }
+  }
+/*  Future<void> addCart({required String id}) async {
+    emit(AddCartLoading());
+    try {
+      var message = await productsRepo.addCart(id: id);
+      message.fold(
+            (failure) => emit(AddCartError(errorMessage: failure.errorMassage)),
+            (message) => emit(AddCartSuccess(message: message)),
+      );
+    } on Exception catch (e) {
+      emit(AddCartError(errorMessage: e.toString()));
+    }
+  }*/
 }

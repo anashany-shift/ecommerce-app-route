@@ -3,8 +3,12 @@ import 'package:ecommerce_app/core/resources/styles_manager.dart';
 import 'package:ecommerce_app/core/routes_manager/routes.dart';
 import 'package:ecommerce_app/core/widget/heart_button.dart';
 import 'package:ecommerce_app/data/model/products/product.dart';
+import 'package:ecommerce_app/features/cart/manger/cart_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+
 
 class CustomProductWidget extends StatelessWidget {
   final double width;
@@ -14,8 +18,8 @@ class CustomProductWidget extends StatelessWidget {
   const CustomProductWidget({
     super.key,
     required this.width,
-    required this.height, required this.product,
-
+    required this.height,
+    required this.product,
   });
 
   String truncateTitle(String title) {
@@ -39,9 +43,10 @@ class CustomProductWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Navigator.pushNamed(context, Routes.productDetails,arguments:product ),
+      onTap: () =>
+          Navigator.pushNamed(context, Routes.productDetails,
+              arguments: product),
       child: Container(
-
         decoration: BoxDecoration(
           border: Border.all(
             color: ColorManager.primary.withOpacity(0.3),
@@ -74,17 +79,20 @@ class CustomProductWidget extends StatelessWidget {
                   // ),
                   ClipRRect(
                     borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(14.r)),
+                    BorderRadius.vertical(top: Radius.circular(14.r)),
                     child: Image.network(
-                      product.imageCover??"",
+                      product.imageCover ?? "",
                       fit: BoxFit.cover,
                       width: width,
                     ),
                   ),
                   Positioned(
-                      top: height * 0.01,
-                      right: width * 0.02,
-                      child: HeartButton(onTap: () {})),
+                    top: height * 0.01,
+                    right: width * 0.02,
+                    child: HeartButton(
+                      id: product.id ?? "",
+                    ),
+                  )
                 ],
               ),
             ),
@@ -96,18 +104,17 @@ class CustomProductWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      truncateTitle(product.title??""),
+                      truncateTitle(product.title ?? ""),
                       style: getMediumStyle(
                         color: ColorManager.textColor,
                         fontSize: 14.sp,
-
                       ),
                       // maxLines: 1,
                       // overflow: TextOverflow.ellipsis,
                     ),
                     SizedBox(height: height * 0.002),
                     Text(
-                      truncateDescription(product.description??""),
+                      truncateDescription(product.description ?? ""),
                       style: getRegularStyle(
                         color: ColorManager.textColor,
                         fontSize: 14.sp,
@@ -122,7 +129,7 @@ class CustomProductWidget extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "EGP ${product.priceAfterDiscount??'0'}",
+                            "EGP ${product.priceAfterDiscount ?? '0'}",
                             style: getRegularStyle(
                               color: ColorManager.textColor,
                               fontSize: 14.sp,
@@ -162,7 +169,10 @@ class CustomProductWidget extends StatelessWidget {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(100),
                           child: InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              context.read<CartCubit>().addCart(
+                                  id: product.id ?? '');
+                            },
                             child: Container(
                               padding: EdgeInsets.all(4),
                               decoration: BoxDecoration(

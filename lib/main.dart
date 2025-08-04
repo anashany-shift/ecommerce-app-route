@@ -23,6 +23,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String token=preferences.getString("token")??"";
+
     return ScreenUtilInit(
       designSize: const Size(430, 932),
       minTextAdapt: true,

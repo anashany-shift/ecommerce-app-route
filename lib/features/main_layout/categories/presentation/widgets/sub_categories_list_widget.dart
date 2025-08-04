@@ -112,11 +112,13 @@ class SubCategoriesListWidget extends StatelessWidget {
             builder: (context, state) {
               if (state is SubCategorySuccess) {
                 final subCategory = state.subCategory;
+
                 return SliverGrid(
                   delegate: SliverChildBuilderDelegate(
                     childCount: subCategory.length,
                         (context, index) => SubCategoryItem(
-                        subCategory[index], goToCategoryProductsListScreen),
+                        subCategory[index], goToCategoryProductsListScreen,
+                       ),
                   ),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,

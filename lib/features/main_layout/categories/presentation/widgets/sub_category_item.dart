@@ -6,9 +6,7 @@ import 'package:ecommerce_app/core/routes_manager/routes.dart';
 import 'package:ecommerce_app/data/model/sub_category_model/SubCategory.dart';
 import 'package:ecommerce_app/features/products_screen/presentation/screens/Products_catalog_argument.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../products_screen/presentation/manger/products_cubit.dart';
 
 class SubCategoryItem extends StatelessWidget {
  SubCategory subCategory;

@@ -34,15 +34,11 @@ class AuthRepoImpl implements AuthRepo{
   }
   @override
   Future<Either<Failure, AuthResponse>> signUp(SignUpRequest signupRequest)async {
-    final SharedPreferences  preferences=await SharedPreferences.getInstance();
 
     try {
      var response =await apiManger.post(endPoint:"api/v1/auth/signup",requestBody: signupRequest.toJson());
      var authResponse=AuthResponse.fromJson(response);
-     await preferences.setString("name", signupRequest.name??"");
-     await preferences.setString("email", signupRequest.email??"");
-     await preferences.setString("password", signupRequest.password??"");
-     await preferences.setString("phone", signupRequest.phone??"");
+
      return right(authResponse);
 
    }  catch (e) {

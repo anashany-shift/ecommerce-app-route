@@ -93,7 +93,9 @@ import 'package:ecommerce_app/core/resources/font_manager.dart';
 import 'package:ecommerce_app/core/resources/styles_manager.dart';
 import 'package:ecommerce_app/core/resources/values_manager.dart';
 import 'package:ecommerce_app/core/routes_manager/routes.dart';
+import 'package:ecommerce_app/features/cart/manger/cart_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -184,8 +186,10 @@ class HomeScreenAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
               ),
               IconButton(
-                onPressed: () =>
-                    Navigator.pushNamed(context, Routes.cartRoute),
+                onPressed: () {
+                    Navigator.pushNamed(context, Routes.cartRoute);
+
+                },
                 icon: ImageIcon(
                   AssetImage(IconsAssets.icCart),
                   color: ColorManager.containerGray,

@@ -5,9 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProductItem extends StatelessWidget {
-  const ProductItem({super.key, this.onTap, required this.imageUrl});
+  const ProductItem({super.key, this.onTap, required this.imageUrl, required this.id});
 
   final void Function()? onTap;
+  final  String id;
 
   final String imageUrl;
   @override
@@ -24,7 +25,7 @@ class ProductItem extends StatelessWidget {
         ),
         alignment: Alignment.topRight,
         child: HeartButton(
-          onTap: onTap,
+        id:id ,
         ),
       ),
     );

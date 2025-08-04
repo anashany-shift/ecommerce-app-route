@@ -76,7 +76,7 @@ class _ProductDetailsState extends State<ProductDetails> {
             ProductSlider(
               items: widget.product.images!
                   .map(
-                    (e) => ProductItem(imageUrl: e),
+                    (e) => ProductItem(imageUrl: e,id:widget.product.id??"" ,),
                   )
                   .toList(),
               initialIndex: 0,
